@@ -2,9 +2,17 @@ import Ember from 'ember';
 
 
 var auth0 = Ember.Object.extend({
+  callbacks: {
+    onLoginSuccess:  function(){},
+    onLoginError:    function(err){ console.log(err); },
+    onSignupSuccess: function(){},
+    onSignupError:   function(err){ console.log(err); }
+  },
 
   // Redirect after use has been successfully logged out
   logoutUrl: null,
+  signupUrl: '/protected',
+  loginUrl:  '/login',
 
   isAuthed: false,
   isAnonymous: Ember.computed.not('isAuthed'),
@@ -37,9 +45,11 @@ var auth0 = Ember.Object.extend({
       this.get('lockOptions'),
       function onLogin(err, profile, token) {
         if (err) {
-          return window.alert(err.message);
+          return this.callbacks.onLoginError.call(this, err);
         }
         this.setAuth(token, profile);
+        this.callbacks.onLoginSuccess.call(this, token, profile);
+        window.location = this.loginUrl;
       }.bind(this)
     );
   },
@@ -49,9 +59,11 @@ var auth0 = Ember.Object.extend({
       this.get('lockOptions'),
       function onLogin(err, profile, token) {
         if (err) {
-          return window.alert(err.message);
+          return this.callbacks.onLoginError.call(this, err);
         }
         this.setAuth(token, profile);
+        this.callbacks.onLoginSuccess.call(this, token, profile);
+        window.location = this.loginUrl;
       }.bind(this)
     );
   },
@@ -59,9 +71,10 @@ var auth0 = Ember.Object.extend({
   signup: function() {
     this.authClient.showSignup(function(err) {
       if (err) {
-        return window.alert(err.message);
+        return this.callbacks.onSignupError.call(this, err);
       }
-      this.trigger('signup');
+      this.callbacks.onSignupSuccess.call(this);
+      this.transitionTo(this.get('signupUrl'));
     }.bind(this));
   },
 
