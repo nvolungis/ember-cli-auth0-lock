@@ -50,6 +50,7 @@ var auth0 = Ember.Object.extend(Ember.Evented, {
     this.authClient.show(
       this.get('lockOptions'),
       function onLogin(err, profile, token) {
+        console.log('show');
         if (err) {
           return this.callbacks.onLoginError.call(this, err);
         }
@@ -65,6 +66,7 @@ var auth0 = Ember.Object.extend(Ember.Evented, {
     this.authClient.showSignin(
       this.get('lockOptions'),
       function onLogin(err, profile, token) {
+        console.log('showSignup');
         if (err) {
           return this.callbacks.onLoginError.call(this, err);
         }
@@ -80,6 +82,7 @@ var auth0 = Ember.Object.extend(Ember.Evented, {
     this.authClient.showSignup(
       this.get('lockOptions'),
       function onLogin(err, profile, token) {
+        console.log('showSignup');
         if (err) {
           return this.callbacks.onLoginError.call(this, err);
         }
