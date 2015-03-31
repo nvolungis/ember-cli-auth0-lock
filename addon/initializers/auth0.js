@@ -3,7 +3,6 @@ import Ember from 'ember';
 var auth0 = Ember.Object.extend(Ember.Evented, {
   callbacks: {
     onLoginSuccess:  function(){
-      // window.location = 'activities';
       console.log('login success');  
     },
     onLoginError:    function(err){ console.log(err); },
@@ -57,7 +56,7 @@ var auth0 = Ember.Object.extend(Ember.Evented, {
         this.setAuth(token, profile);
         this.callbacks.onLoginSuccess.call(this, token, profile);
         console.log('logged in', this);
-        if(this.loginUrl) window.location = this.loginUrl;
+        // if(this.loginUrl) window.location = this.loginUrl;
       }.bind(this)
     );
   },
@@ -73,7 +72,7 @@ var auth0 = Ember.Object.extend(Ember.Evented, {
         this.setAuth(token, profile);
         this.callbacks.onLoginSuccess.call(this, token, profile);
         console.log('logged in', this);
-        if(this.loginUrl) window.location = this.loginUrl;
+        // if(this.loginUrl) window.location = this.loginUrl;
       }.bind(this)
     );
   },
