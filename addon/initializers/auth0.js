@@ -70,18 +70,25 @@ var auth0 = Ember.Object.extend(Ember.Evented, {
         }
         this.setAuth(token, profile);
         this.callbacks.onLoginSuccess.call(this, token, profile);
+        console.log('logged in', this);
+        if(this.loginUrl) window.location = this.loginUrl;
       }.bind(this)
     );
   },
 
   signup: function() {
-    this.authClient.showSignup(function(err) {
-      if (err) {
-        return this.callbacks.onSignupError.call(this, err);
-      }
-      this.callbacks.onSignupSuccess.call(this);
-      if(this.signupUrl) window.location = this.signupUrl;
-    }.bind(this));
+    this.authClient.showSignup(
+      this.get('lockOptions'),
+      function onLogin(err, profile, token) {
+        if (err) {
+          return this.callbacks.onLoginError.call(this, err);
+        }
+        this.setAuth(token, profile);
+        this.callbacks.onLoginSuccess.call(this, token, profile);
+        console.log('logged in', this);
+        if(this.loginUrl) window.location = this.loginUrl;
+      }.bind(this)
+    );
   },
 
   logout: function() {
