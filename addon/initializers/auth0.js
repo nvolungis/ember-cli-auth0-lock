@@ -169,7 +169,7 @@ export function initialize(container, application) {
 
         console.log('sync before', uid);
 
-        if(uid == null) return;
+        if(uid == null || uid == 'null') return;
 
         store.find('user', uid).then(function(user){
           this.set('user', user);
